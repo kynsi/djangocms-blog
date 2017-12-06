@@ -13,7 +13,7 @@ from django.utils.translation import get_language
 from django.views.generic import DetailView, ListView
 from parler.views import TranslatableSlugMixin, ViewUrlMixin
 
-from .models import BlogCategory, Post
+from .models import BlogCategory, Post, Person
 from .settings import get_setting
 
 User = get_user_model()
@@ -157,15 +157,22 @@ class TaggedListView(BaseBlogListView, ListView):
 
 class AuthorEntriesView(BaseBlogListView, ListView):
     view_url_name = 'djangocms_blog:posts-author'
-
+    
+    
+    
     def get_queryset(self):
         qs = super(AuthorEntriesView, self).get_queryset()
-        if 'username' in self.kwargs:
-            qs = qs.filter(**{'author__%s' % User.USERNAME_FIELD: self.kwargs['username']})
+        slug = self.kwargs['author_slug']
+        self.author = Person.objects.language(language).active_translations(
+            language, slug=slug).first()
+        
+        if 'author_slug' in self.kwargs:
+            qs = qs.filter(**{'author' = author})
         return self.optimize(qs)
 
     def get_context_data(self, **kwargs):
-        kwargs['author'] = User.objects.get(**{User.USERNAME_FIELD: self.kwargs.get('username')})
+        
+        kwargs['author'] = author
         context = super(AuthorEntriesView, self).get_context_data(**kwargs)
         return context
 

@@ -34,7 +34,7 @@ urlpatterns = [
         PostArchiveView.as_view(), name='posts-archive'),
     url(r'^(?P<year>\d{4})/(?P<month>\d{1,2})/$',
         PostArchiveView.as_view(), name='posts-archive'),
-    url(r'^author/(?P<username>[\w\.@+-]+)/$',
+    url(r'^author/(?P<author_slug>[\w\.@+-]+)/$',
         AuthorEntriesView.as_view(), name='posts-author'),
     url(r'^category/(?P<category>[\w\.@+-]+)/$',
         CategoryEntriesView.as_view(), name='posts-category'),
