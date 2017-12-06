@@ -163,6 +163,7 @@ class AuthorEntriesView(BaseBlogListView, ListView):
     def get_queryset(self):
         qs = super(AuthorEntriesView, self).get_queryset()
         slug = self.kwargs['author_slug']
+        language = translation.get_language_from_request(request, check_path=True)
         self.author = Person.objects.language(language).active_translations(
             language, slug=slug).first()
         
