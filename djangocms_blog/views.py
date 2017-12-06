@@ -165,16 +165,16 @@ class AuthorEntriesView(BaseBlogListView, ListView):
         qs = super(AuthorEntriesView, self).get_queryset()
         slug = self.kwargs['author_slug']
         language = get_language()
-        author = Person.objects.language(language).active_translations(
+        self.author = Person.objects.language(language).active_translations(
             language, slug=slug).first()
         
         if 'author_slug' in self.kwargs:
-            qs = qs.filter(author = author)
+            qs = qs.filter(author = self.author)
         return self.optimize(qs)
 
     def get_context_data(self, **kwargs):
         
-        kwargs['author'] = author
+        kwargs['author'] = self.author
         context = super(AuthorEntriesView, self).get_context_data(**kwargs)
         return context
 
