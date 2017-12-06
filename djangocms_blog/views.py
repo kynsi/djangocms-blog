@@ -167,7 +167,7 @@ class AuthorEntriesView(BaseBlogListView, ListView):
             language, slug=slug).first()
         
         if 'author_slug' in self.kwargs:
-            qs = qs.filter(**{'author' = author})
+            qs = qs.filter('author' = author)
         return self.optimize(qs)
 
     def get_context_data(self, **kwargs):
