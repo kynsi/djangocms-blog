@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 from parler.forms import TranslatableModelForm
 
 from .cms_appconfig import BlogConfig
-from .models import Post
+from .models import Post,Person
 
 
 class PostWizardForm(TranslatableModelForm):
@@ -34,13 +34,16 @@ class PostWizardForm(TranslatableModelForm):
 
     class Meta:
         model = Post
-        fields = ['app_config', 'title', 'abstract', 'categories']
+        fields = ['app_config', 'title', 'abstract', 'categories','author']
 
     class Media:
         js = ('admin/js/jquery.js', 'admin/js/jquery.init.js',)
 
     def save(self, commit=True):
-        self.instance._set_default_author(get_current_user())
+        # self.instance._set_default_author(get_current_user())
+        print(get_current_user())
+        author = Person.objects.get(user=get_current_user())
+        print(author)
         return super(PostWizardForm, self).save(commit)
 
 
