@@ -41,9 +41,9 @@ class PostWizardForm(TranslatableModelForm):
 
     def save(self, commit=True):
         # self.instance._set_default_author(get_current_user())
-        print(get_current_user())
+        # print(get_current_user())
         author = Person.objects.get(user=get_current_user())
-        print(author)
+        # print(author)
         self.instance._set_default_author(author)
         
         return super(PostWizardForm, self).save(commit)
